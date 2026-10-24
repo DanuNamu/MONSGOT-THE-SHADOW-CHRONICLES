@@ -1,0 +1,1450 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-950">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MONSGOTÁ: The Shadow Chronicles - ARG English Learning Game</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chewy&family=Creepster&family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Tone.js for Sound Effects -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            title: ['Creepster', 'cursive'],
+            chewy: ['Chewy', 'cursive'],
+            sans: ['Fredoka', 'sans-serif'],
+          },
+          colors: {
+            spooky: {
+              purple: '#2A1B40',
+              deepPurple: '#130924',
+              teal: '#00F5D4',
+              green: '#70E000',
+              yellow: '#FFD166',
+              orange: '#FF9F1C',
+              magenta: '#F72585',
+              darkRed: '#540B0E',
+            }
+          },
+          animation: {
+            'float': 'float 3s ease-in-out infinite',
+            'pulse-glow': 'pulseGlow 2s ease-in-out infinite',
+            'fog-move': 'fogMove 20s linear infinite',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-10px)' },
+            },
+            pulseGlow: {
+              '0%, 100%': { filter: 'drop-shadow(0 0 15px rgba(255, 209, 102, 0.8))' },
+              '50%': { filter: 'drop-shadow(0 0 25px rgba(255, 209, 102, 1))' },
+            },
+            fogMove: {
+              '0%': { transform: 'translateX(-10%)' },
+              '100%': { transform: 'translateX(10%)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #130924;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #2A1B40;
+      border: 2px solid #70E000;
+      border-radius: 8px;
+    }
+
+    /* Tombstone Button Style */
+    .btn-tombstone {
+      background: linear-gradient(180deg, #3A2E56 0%, #1D1530 100%);
+      border: 3px solid #70E000;
+      border-radius: 20px 20px 8px 8px;
+      box-shadow: 0 8px 0 #0D0718, 0 0 15px rgba(112, 224, 0, 0.4);
+      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .btn-tombstone:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 0 #0D0718, 0 0 25px rgba(112, 224, 0, 0.8);
+      border-color: #00F5D4;
+    }
+    .btn-tombstone:active {
+      transform: translateY(2px);
+      box-shadow: 0 4px 0 #0D0718;
+    }
+
+    /* Sarcophagus Card Style */
+    .card-sarcophagus {
+      background: linear-gradient(145deg, #231638 0%, #120A21 100%);
+      border: 3px solid #FF9F1C;
+      border-radius: 24px;
+      box-shadow: inset 0 0 15px rgba(0,0,0,0.8), 0 10px 20px rgba(0,0,0,0.6);
+      transition: all 0.3s ease;
+    }
+    .card-sarcophagus:hover {
+      border-color: #00F5D4;
+      transform: scale(1.02);
+      box-shadow: inset 0 0 20px rgba(0, 245, 212, 0.3), 0 15px 30px rgba(0,0,0,0.8);
+    }
+
+    .clip-path-banner {
+      clip-path: polygon(0 0, 100% 0, 95% 100%, 5% 100%);
+    }
+
+    /* Fog overlay effect */
+    .fog-layer {
+      background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body class="h-full font-sans text-slate-100 flex flex-col justify-between selection:bg-spooky-teal selection:text-spooky-deepPurple">
+
+  <!-- TOP HEADER / NAV BAR -->
+  <header class="bg-spooky-deepPurple/90 backdrop-blur-md border-b-4 border-spooky-purple sticky top-0 z-50 px-4 py-3 shadow-2xl">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      
+      <!-- Brand Logo -->
+      <div class="flex items-center gap-3 cursor-pointer" onclick="switchTab('landing')">
+        <div class="w-10 h-10 rounded-full bg-spooky-purple border-2 border-spooky-yellow flex items-center justify-center animate-bounce">
+          <i class="fa-solid font-bold text-spooky-yellow text-xl">👻</i>
+        </div>
+        <div>
+          <span class="font-chewy text-xs text-spooky-teal tracking-widest block leading-none">DANU.NAM PRESENTS</span>
+          <h1 class="font-title text-2xl md:text-3xl text-spooky-yellow tracking-wider drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+            MONSGOTÁ
+          </h1>
+        </div>
+      </div>
+
+      <!-- Main Navigation Menu (Tombstone style) -->
+      <nav class="hidden md:flex gap-2">
+        <button onclick="switchTab('landing')" class="px-4 py-1.5 text-sm font-chewy text-spooky-teal bg-spooky-purple border-2 border-spooky-teal rounded-t-xl hover:bg-spooky-teal hover:text-spooky-deepPurple transition-all">
+          <i class="fa-solid fa-house mr-1"></i> Home
+        </button>
+        <button onclick="switchTab('characters')" class="px-4 py-1.5 text-sm font-chewy text-spooky-yellow bg-spooky-purple border-2 border-spooky-yellow rounded-t-xl hover:bg-spooky-yellow hover:text-spooky-deepPurple transition-all">
+          <i class="fa-solid fa-users-viewfinder mr-1"></i> Characters
+        </button>
+        <button onclick="switchTab('map')" id="nav-map-btn" class="px-4 py-1.5 text-sm font-chewy text-spooky-green bg-spooky-purple border-2 border-spooky-green rounded-t-xl hover:bg-spooky-green hover:text-spooky-deepPurple transition-all">
+          <i class="fa-solid fa-map-location-dot mr-1"></i> Map
+        </button>
+        <button onclick="switchTab('badges')" class="px-4 py-1.5 text-sm font-chewy text-spooky-orange bg-spooky-purple border-2 border-spooky-orange rounded-t-xl hover:bg-spooky-orange hover:text-spooky-deepPurple transition-all">
+          <i class="fa-solid fa-award mr-1"></i> Badges
+        </button>
+        <button onclick="switchTab('journal')" class="px-4 py-1.5 text-sm font-chewy text-spooky-magenta bg-spooky-purple border-2 border-spooky-magenta rounded-t-xl hover:bg-spooky-magenta hover:text-spooky-deepPurple transition-all">
+          <i class="fa-solid fa-book-skull mr-1"></i> Journal
+        </button>
+      </nav>
+
+      <!-- Active Character & Energy Tracker -->
+      <div id="status-bar" class="flex items-center gap-3 bg-spooky-purple/80 px-3 py-1.5 rounded-full border border-spooky-yellow/40">
+        <div id="active-char-avatar" class="w-8 h-8 rounded-full bg-slate-800 border border-spooky-teal overflow-hidden flex items-center justify-center text-lg">
+          ❓
+        </div>
+        <div class="text-xs">
+          <span id="active-char-name" class="font-chewy text-spooky-yellow block leading-none">No Character</span>
+          <div class="flex items-center gap-1 mt-0.5">
+            <i class="fa-solid fa-bolt text-spooky-green text-[10px]"></i>
+            <div class="w-16 h-2 bg-slate-900 rounded-full overflow-hidden border border-slate-700">
+              <div id="energy-bar" class="h-full bg-spooky-green w-full transition-all duration-500"></div>
+            </div>
+            <span id="energy-text" class="text-[10px] text-slate-300 font-bold">100%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button onclick="toggleMobileMenu()" class="md:hidden text-spooky-yellow text-2xl focus:outline-none">
+        <i class="fa-solid fa-bars-staggered"></i>
+      </button>
+    </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobile-menu" class="hidden md:hidden pt-3 pb-1 border-t border-spooky-purple mt-2 flex flex-wrap justify-around gap-2">
+      <button onclick="switchTab('landing')" class="px-3 py-1 text-xs font-chewy text-spooky-teal bg-spooky-purple/80 border border-spooky-teal rounded-lg">Home</button>
+      <button onclick="switchTab('characters')" class="px-3 py-1 text-xs font-chewy text-spooky-yellow bg-spooky-purple/80 border border-spooky-yellow rounded-lg">Characters</button>
+      <button onclick="switchTab('map')" class="px-3 py-1 text-xs font-chewy text-spooky-green bg-spooky-purple/80 border border-spooky-green rounded-lg">Map</button>
+      <button onclick="switchTab('badges')" class="px-3 py-1 text-xs font-chewy text-spooky-orange bg-spooky-purple/80 border border-spooky-orange rounded-lg">Badges</button>
+      <button onclick="switchTab('journal')" class="px-3 py-1 text-xs font-chewy text-spooky-magenta bg-spooky-purple/80 border border-spooky-magenta rounded-lg">Journal</button>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT CONTAINER -->
+  <main class="flex-grow relative overflow-hidden flex flex-col justify-center">
+
+    <!-- FOG OVERLAY EFFECT -->
+    <div class="absolute inset-0 fog-layer animate-fog-move z-10 pointer-events-none"></div>
+
+    <!-- 1. LANDING PAGE / INICIO -->
+    <section id="tab-landing" class="tab-page max-w-6xl mx-auto px-4 py-8 text-center relative z-20 my-auto">
+      <!-- Full Moon Background Effect -->
+      <div class="absolute -top-20 left-1/2 -translate-x-1/2 w-72 h-72 md:w-96 md:h-96 rounded-full bg-spooky-yellow/20 blur-3xl -z-10 animate-pulse-glow"></div>
+
+      <div class="inline-block bg-spooky-purple/80 border-2 border-spooky-yellow px-6 py-1.5 rounded-full mb-4 shadow-lg">
+        <span class="font-chewy text-spooky-yellow text-sm md:text-base tracking-widest">🎃 BOGOTÁ ALTERNATIVE REALITY GAME (CEFR A1 ➔ A2) 🎃</span>
+      </div>
+
+      <h1 class="font-title text-5xl md:text-8xl text-spooky-yellow tracking-wider mb-2 drop-shadow-[0_5px_10px_rgba(0,0,0,0.9)]">
+        MONSGOTÁ
+      </h1>
+      <h2 class="font-chewy text-2xl md:text-4xl text-spooky-teal mb-6 drop-shadow-[0_3px_6px_rgba(0,0,0,0.8)]">
+        THE SHADOW CHRONICLES
+      </h2>
+
+      <p class="max-w-2xl mx-auto text-slate-200 text-base md:text-lg mb-8 bg-spooky-deepPurple/80 p-4 rounded-2xl border border-spooky-purple shadow-xl backdrop-blur-sm">
+        Welcome to the foggy, magical twin city of Bogotá! Join cute chibi monster students, solve English challenges, make crucial ARG decisions across historic landmarks, and shape the future of Monsgotá!
+      </p>
+
+      <!-- Animated Spooky Bogota Map Preview Canvas Graphic -->
+      <div class="relative max-w-xl mx-auto h-48 md:h-64 rounded-3xl border-4 border-spooky-orange bg-spooky-deepPurple/90 overflow-hidden mb-8 shadow-2xl flex items-center justify-center">
+        <!-- SVG Vector Bogota Skyline Spooky Graphic -->
+        <svg class="absolute inset-0 w-full h-full object-cover opacity-60" viewBox="0 0 500 200" preserveAspectRatio="none">
+          <path d="M0,200 L0,150 Q100,120 200,160 T400,130 L500,170 L500,200 Z" fill="#2A1B40" />
+          <path d="M0,200 L0,170 Q150,140 300,180 T500,150 L500,200 Z" fill="#130924" />
+          <!-- Full Moon -->
+          <circle cx="400" cy="50" r="35" fill="#FFD166" opacity="0.9" />
+          <!-- Monserrate Sanctuary Silhouette -->
+          <path d="M 330 135 L 350 90 L 370 135 Z" fill="#130924" />
+          <rect x="345" y="80" width="10" height="15" fill="#130924" />
+          <!-- Animated Ghosts -->
+          <g class="animate-float">
+            <circle cx="120" cy="80" r="12" fill="#00F5D4" opacity="0.8" />
+            <path d="M 108 80 Q 120 105 132 80 Z" fill="#00F5D4" opacity="0.8" />
+          </g>
+          <g class="animate-float" style="animation-delay: 1.5s;">
+            <circle cx="280" cy="60" r="10" fill="#70E000" opacity="0.8" />
+            <path d="M 270 60 Q 280 85 290 60 Z" fill="#70E000" opacity="0.8" />
+          </g>
+        </svg>
+
+        <div class="relative z-10 p-4">
+          <p class="font-chewy text-xl md:text-2xl text-spooky-yellow mb-3">Are you ready to explore the mist?</p>
+          <!-- Tombstone Start Button -->
+          <button onclick="switchTab('characters')" class="btn-tombstone px-8 py-3 font-chewy text-xl text-spooky-green tracking-wider uppercase flex items-center gap-3 mx-auto">
+            <i class="fa-solid fa-ghost text-2xl"></i> Choose Your Monster
+          </button>
+        </div>
+      </div>
+
+      <!-- Tombstone Navigation Options -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
+        <button onclick="switchTab('characters')" class="btn-tombstone p-4 flex flex-col items-center">
+          <i class="fa-solid fa-user-astronaut text-spooky-yellow text-2xl mb-1"></i>
+          <span class="font-chewy text-sm text-slate-200">Select Hero</span>
+        </button>
+        <button onclick="switchTab('map')" class="btn-tombstone p-4 flex flex-col items-center">
+          <i class="fa-solid fa-map-marked-alt text-spooky-teal text-2xl mb-1"></i>
+          <span class="font-chewy text-sm text-slate-200">Explore Map</span>
+        </button>
+        <button onclick="switchTab('badges')" class="btn-tombstone p-4 flex flex-col items-center">
+          <i class="fa-solid fa-shield-cat text-spooky-orange text-2xl mb-1"></i>
+          <span class="font-chewy text-sm text-slate-200">Badges</span>
+        </button>
+        <button onclick="switchTab('journal')" class="btn-tombstone p-4 flex flex-col items-center">
+          <i class="fa-solid fa-book-open-reader text-spooky-magenta text-2xl mb-1"></i>
+          <span class="font-chewy text-sm text-slate-200">ARG Journal</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- 2. CHARACTER SELECTION / SELECCIÓN DE PERSONAJE -->
+    <section id="tab-characters" class="tab-page hidden max-w-6xl mx-auto px-4 py-6 relative z-20">
+      <div class="text-center mb-6">
+        <h2 class="font-title text-4xl md:text-5xl text-spooky-yellow tracking-wider">CHOOSE YOUR MONSTER HERO</h2>
+        <p class="font-chewy text-spooky-teal text-lg">Each hero brings a unique story perspective and English badge!</p>
+      </div>
+
+      <!-- 5 Character Sarcophagus Cards Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4" id="characters-container">
+        <!-- Rendered dynamically by JS -->
+      </div>
+    </section>
+
+    <!-- 3. INTERACTIVE BOGOTA MAP / MAPA INTERACTIVO DE MONSGOTÁ -->
+    <section id="tab-map" class="tab-page hidden max-w-6xl mx-auto px-4 py-4 relative z-20">
+      <div class="flex flex-col md:flex-row justify-between items-center mb-4 bg-spooky-purple/90 p-3 rounded-2xl border border-spooky-yellow">
+        <div>
+          <h2 class="font-title text-2xl md:text-3xl text-spooky-yellow leading-none">MAP OF MONSGOTÁ</h2>
+          <p class="text-xs text-slate-300">Select unlocked locations to complete challenges & ARG dilemmas!</p>
+        </div>
+        <div class="mt-2 md:mt-0 flex items-center gap-2">
+          <span class="text-xs font-bold text-spooky-teal bg-spooky-deepPurple px-3 py-1 rounded-full border border-spooky-teal">
+            Progress: Level <span id="current-level-display">1</span> / 5
+          </span>
+        </div>
+      </div>
+
+      <!-- Map Display Container -->
+      <div class="relative w-full h-[450px] rounded-3xl border-4 border-spooky-purple bg-spooky-deepPurple overflow-hidden shadow-2xl">
+        <!-- Custom SVG Map Artwork -->
+        <svg class="w-full h-full object-cover" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid slice">
+          <!-- Background Dark Hills & Sky -->
+          <rect width="1000" height="600" fill="#130924"/>
+          <!-- Sky Gradient Effect -->
+          <circle cx="850" cy="100" r="80" fill="#FFD166" opacity="0.8" />
+          <!-- Fog and mountain curves -->
+          <path d="M 0 600 L 0 350 Q 250 200 500 380 T 1000 300 L 1000 600 Z" fill="#2A1B40" opacity="0.9" />
+          <path d="M 0 600 L 0 450 Q 350 300 700 480 T 1000 400 L 1000 600 Z" fill="#1A0F2E" />
+
+          <!-- Connecting Path Line -->
+          <path d="M 180 480 Q 320 380 480 320 T 720 220 T 880 140" fill="none" stroke="#FF9F1C" stroke-width="4" stroke-dasharray="8,8" />
+
+          <!-- Location 1: The Dark Academy (Chapinero) -->
+          <g id="map-node-1" class="cursor-pointer group" onclick="selectLevel(1)">
+            <circle cx="180" cy="480" r="38" fill="#540B0E" stroke="#FFD166" stroke-width="4" class="transition-all group-hover:scale-110" />
+            <text x="180" y="475" text-anchor="middle" fill="#FFFFFF" font-size="28">🏫</text>
+            <text x="180" y="500" text-anchor="middle" fill="#FFD166" font-family="Chewy" font-size="12">L1: Academy</text>
+          </g>
+
+          <!-- Location 2: TransMilenio Spooky Station -->
+          <g id="map-node-2" class="cursor-pointer group" onclick="selectLevel(2)">
+            <circle cx="350" cy="390" r="38" fill="#2A1B40" stroke="#70E000" stroke-width="4" class="transition-all group-hover:scale-110" />
+            <text x="350" y="385" text-anchor="middle" fill="#FFFFFF" font-size="28">🚌</text>
+            <text x="350" y="410" text-anchor="middle" fill="#70E000" font-family="Chewy" font-size="12">L2: Station</text>
+          </g>
+
+          <!-- Location 3: Monster-rate Hill (Monserrate) -->
+          <g id="map-node-3" class="cursor-pointer group" onclick="selectLevel(3)">
+            <circle cx="520" cy="300" r="38" fill="#2A1B40" stroke="#00F5D4" stroke-width="4" class="transition-all group-hover:scale-110" />
+            <text x="520" y="295" text-anchor="middle" fill="#FFFFFF" font-size="28">⛰️</text>
+            <text x="520" y="320" text-anchor="middle" fill="#00F5D4" font-family="Chewy" font-size="12">L3: Hill</text>
+          </g>
+
+          <!-- Location 4: The Ghostly Plaza of Bolívar -->
+          <g id="map-node-4" class="cursor-pointer group" onclick="selectLevel(4)">
+            <circle cx="720" cy="220" r="38" fill="#2A1B40" stroke="#F72585" stroke-width="4" class="transition-all group-hover:scale-110" />
+            <text x="720" y="215" text-anchor="middle" fill="#FFFFFF" font-size="28">🏛️</text>
+            <text x="720" y="240" text-anchor="middle" fill="#F72585" font-family="Chewy" font-size="12">L4: Plaza</text>
+          </g>
+
+          <!-- Location 5: The Misty Planetarium -->
+          <g id="map-node-5" class="cursor-pointer group" onclick="selectLevel(5)">
+            <circle cx="880" cy="140" r="38" fill="#2A1B40" stroke="#FF9F1C" stroke-width="4" class="transition-all group-hover:scale-110" />
+            <text x="880" y="135" text-anchor="middle" fill="#FFFFFF" font-size="28">🪐</text>
+            <text x="880" y="160" text-anchor="middle" fill="#FF9F1C" font-family="Chewy" font-size="12">L5: Planetarium</text>
+          </g>
+        </svg>
+
+        <!-- Selected Location Details Box overlay -->
+        <div id="map-location-card" class="absolute bottom-4 left-4 right-4 md:left-auto md:right-4 md:w-96 bg-spooky-deepPurple/95 p-4 rounded-2xl border-2 border-spooky-yellow shadow-2xl backdrop-blur-md">
+          <div class="flex items-center justify-between mb-2">
+            <h3 id="location-card-title" class="font-title text-2xl text-spooky-yellow">The Dark Academy</h3>
+            <span id="location-card-cefr" class="bg-spooky-purple text-spooky-teal text-xs px-2 py-0.5 rounded font-bold border border-spooky-teal">A1.1</span>
+          </div>
+          <p id="location-card-desc" class="text-xs text-slate-300 mb-3 leading-relaxed">
+            A gothic school mansion in Chapinero with brick walls, glowing warm windows, and crooked spooky trees.
+          </p>
+          <button id="start-level-btn" onclick="openLevelMission()" class="w-full btn-tombstone py-2 font-chewy text-spooky-green text-lg uppercase flex items-center justify-center gap-2">
+            <i class="fa-solid fa-play"></i> Enter Location
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. LEVEL MISSION VIEW (VOCABULARY & SKILLS CHALLENGES) -->
+    <section id="tab-mission" class="tab-page hidden max-w-5xl mx-auto px-4 py-4 relative z-20">
+      <div class="bg-spooky-deepPurple/90 rounded-3xl border-4 border-spooky-purple p-4 md:p-6 shadow-2xl">
+        
+        <!-- Header / Navigation Bar inside mission -->
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b-2 border-spooky-purple pb-3 mb-4">
+          <button onclick="switchTab('map')" class="text-xs font-chewy text-spooky-yellow bg-spooky-purple px-3 py-1.5 rounded-lg border border-spooky-yellow hover:bg-spooky-yellow hover:text-spooky-deepPurple transition-all">
+            <i class="fa-solid fa-arrow-left"></i> Back to Map
+          </button>
+          <h2 id="mission-title" class="font-title text-2xl md:text-3xl text-spooky-yellow">LEVEL 1: THE DARK ACADEMY</h2>
+          <span id="mission-skill-badge" class="bg-spooky-teal/20 text-spooky-teal text-xs font-bold px-3 py-1 rounded-full border border-spooky-teal">
+            Reading & Vocabulary
+          </span>
+        </div>
+
+        <!-- Mission Tabs: Flashcards -> 4 Skills -> ARG Decision -->
+        <div class="flex flex-wrap gap-2 mb-6 border-b border-slate-800 pb-2">
+          <button onclick="switchMissionSubTab('vocab')" id="subtab-btn-vocab" class="px-4 py-1.5 rounded-xl font-chewy text-sm bg-spooky-yellow text-spooky-deepPurple font-bold">
+            <i class="fa-solid fa-book mr-1"></i> Flashcards
+          </button>
+          <button onclick="switchMissionSubTab('reading')" id="subtab-btn-reading" class="px-4 py-1.5 rounded-xl font-chewy text-sm bg-spooky-purple text-slate-300">
+            <i class="fa-solid fa-glasses mr-1"></i> Reading
+          </button>
+          <button onclick="switchMissionSubTab('listening')" id="subtab-btn-listening" class="px-4 py-1.5 rounded-xl font-chewy text-sm bg-spooky-purple text-slate-300">
+            <i class="fa-solid fa-headphones mr-1"></i> Listening
+          </button>
+          <button onclick="switchMissionSubTab('writing')" id="subtab-btn-writing" class="px-4 py-1.5 rounded-xl font-chewy text-sm bg-spooky-purple text-slate-300">
+            <i class="fa-solid fa-pen-nib mr-1"></i> Writing
+          </button>
+          <button onclick="switchMissionSubTab('speaking')" id="subtab-btn-speaking" class="px-4 py-1.5 rounded-xl font-chewy text-sm bg-spooky-purple text-slate-300">
+            <i class="fa-solid fa-microphone mr-1"></i> Speaking
+          </button>
+          <button onclick="switchMissionSubTab('decision')" id="subtab-btn-decision" class="px-4 py-1.5 rounded-xl font-chewy text-sm bg-spooky-magenta text-slate-100 ml-auto animate-pulse">
+            <i class="fa-solid fa-code-branch mr-1"></i> ARG Decision
+          </button>
+        </div>
+
+        <!-- SUBTAB 1: VOCABULARY FLASHCARDS -->
+        <div id="subtab-vocab" class="mission-subtab">
+          <p class="text-sm text-slate-300 mb-4">Click each flashcard to flip and listen to native English audio pronunciation!</p>
+          <div id="flashcards-grid" class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <!-- Flashcards rendered by JS -->
+          </div>
+        </div>
+
+        <!-- SUBTAB 2: READING CHALLENGE -->
+        <div id="subtab-reading" class="mission-subtab hidden">
+          <div class="bg-spooky-purple/60 p-4 rounded-2xl border border-spooky-teal mb-4">
+            <h3 class="font-chewy text-xl text-spooky-teal mb-2"><i class="fa-solid fa-book-open mr-2"></i> Read the Passage:</h3>
+            <p id="reading-text" class="text-slate-200 text-sm leading-relaxed italic bg-slate-950/80 p-3 rounded-xl border border-slate-800">
+              Reading text prompt...
+            </p>
+          </div>
+
+          <div class="bg-slate-900 p-4 rounded-2xl border border-spooky-purple">
+            <h4 id="reading-question" class="font-chewy text-lg text-spooky-yellow mb-3">Question goes here...</h4>
+            <div id="reading-options" class="grid grid-cols-1 gap-2">
+              <!-- Options rendered by JS -->
+            </div>
+            <div id="reading-feedback" class="mt-3 text-sm font-bold hidden"></div>
+          </div>
+        </div>
+
+        <!-- SUBTAB 3: LISTENING CHALLENGE -->
+        <div id="subtab-listening" class="mission-subtab hidden">
+          <div class="bg-spooky-purple/60 p-6 rounded-2xl border border-spooky-green text-center mb-4">
+            <h3 class="font-chewy text-2xl text-spooky-green mb-3">Listen to the Spooky Audio</h3>
+            <button onclick="playListeningAudio()" class="btn-tombstone px-6 py-3 font-chewy text-xl text-spooky-yellow inline-flex items-center gap-3">
+              <i class="fa-solid fa-volume-high text-2xl animate-bounce"></i> Play Voice Clip
+            </button>
+            <p id="listening-instruction" class="text-xs text-slate-400 mt-2">Listen carefully to answer the question below!</p>
+          </div>
+
+          <div class="bg-slate-900 p-4 rounded-2xl border border-spooky-purple">
+            <h4 id="listening-question" class="font-chewy text-lg text-spooky-yellow mb-3">Question goes here...</h4>
+            <div id="listening-options" class="grid grid-cols-1 gap-2">
+              <!-- Options rendered by JS -->
+            </div>
+            <div id="listening-feedback" class="mt-3 text-sm font-bold hidden"></div>
+          </div>
+        </div>
+
+        <!-- SUBTAB 4: WRITING CHALLENGE -->
+        <div id="subtab-writing" class="mission-subtab hidden">
+          <div class="bg-spooky-purple/60 p-5 rounded-2xl border border-spooky-orange mb-4">
+            <h3 class="font-chewy text-xl text-spooky-orange mb-2"><i class="fa-solid fa-pen-fancy mr-2"></i> Writing Task:</h3>
+            <p id="writing-instruction" class="text-sm text-slate-300 mb-3">Complete the sentence with the correct English word.</p>
+            
+            <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 text-lg font-chewy text-spooky-yellow flex flex-wrap items-center gap-2">
+              <span id="writing-template-before">Template before</span>
+              <input type="text" id="writing-input" placeholder="type word..." class="bg-slate-900 text-spooky-teal border-2 border-spooky-teal px-3 py-1 rounded-lg focus:outline-none w-36 text-base font-sans">
+              <span id="writing-template-after">Template after</span>
+            </div>
+          </div>
+
+          <button onclick="checkWritingAnswer()" class="btn-tombstone px-6 py-2.5 font-chewy text-spooky-green text-lg">
+            Submit Answer
+          </button>
+          <div id="writing-feedback" class="mt-3 text-sm font-bold hidden"></div>
+        </div>
+
+        <!-- SUBTAB 5: SPEAKING CHALLENGE -->
+        <div id="subtab-speaking" class="mission-subtab hidden">
+          <div class="bg-spooky-purple/60 p-6 rounded-2xl border border-spooky-magenta text-center mb-4">
+            <h3 class="font-chewy text-2xl text-spooky-magenta mb-2">Speak in English!</h3>
+            <p class="text-sm text-slate-300 mb-4">Say this target phrase out loud:</p>
+            <div id="speaking-phrase" class="text-xl md:text-2xl font-chewy text-spooky-yellow bg-slate-950 p-4 rounded-xl border border-spooky-yellow inline-block mb-4">
+              "Good evening Mr. Janitor!"
+            </div>
+
+            <div class="flex justify-center gap-3">
+              <button onclick="playSpeakingSample()" class="px-4 py-2 bg-spooky-purple border border-spooky-teal text-spooky-teal font-chewy text-sm rounded-xl">
+                <i class="fa-solid fa-ear-listen mr-1"></i> Listen Sample
+              </button>
+              <button id="mic-btn" onclick="startSpeechRecognition()" class="btn-tombstone px-6 py-2.5 font-chewy text-spooky-magenta text-lg flex items-center gap-2">
+                <i class="fa-solid fa-microphone text-xl"></i> Record Voice
+              </button>
+            </div>
+            <p id="speaking-status" class="text-xs text-slate-400 mt-3">Click record and speak clearly into your microphone.</p>
+          </div>
+          <div id="speaking-feedback" class="text-center font-chewy text-lg hidden"></div>
+        </div>
+
+        <!-- SUBTAB 6: ARG BRANCHING DECISION NODE -->
+        <div id="subtab-decision" class="mission-subtab hidden">
+          <div class="bg-gradient-to-br from-spooky-purple via-slate-900 to-spooky-deepPurple p-6 rounded-2xl border-4 border-spooky-magenta shadow-2xl">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="text-3xl">⚖️</span>
+              <div>
+                <h3 class="font-title text-3xl text-spooky-magenta leading-none">ARG DECISION NODE</h3>
+                <p class="text-xs text-spooky-teal font-chewy">Your choice will permanently impact Monsgotá's story!</p>
+              </div>
+            </div>
+
+            <p id="decision-dilemma-text" class="text-slate-100 text-base md:text-lg mb-6 leading-relaxed bg-slate-950/80 p-4 rounded-xl border border-slate-800">
+              Dilemma text goes here...
+            </p>
+
+            <!-- Decision Options Grid -->
+            <div id="decision-options-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <!-- Decision buttons injected by JS -->
+            </div>
+
+            <!-- Narrative Result Display -->
+            <div id="decision-result-box" class="mt-6 p-4 rounded-xl bg-spooky-deepPurple border-2 border-spooky-yellow hidden">
+              <h4 class="font-chewy text-xl text-spooky-yellow mb-1">Outcome & Consequence:</h4>
+              <p id="decision-result-text" class="text-sm text-slate-200 leading-relaxed"></p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 5. BADGES & ACHIEVEMENTS GALLERY -->
+    <section id="tab-badges" class="tab-page hidden max-w-6xl mx-auto px-4 py-6 relative z-20">
+      <div class="text-center mb-6">
+        <h2 class="font-title text-4xl md:text-5xl text-spooky-yellow tracking-wider">BADGES & TROPHIES</h2>
+        <p class="font-chewy text-spooky-teal text-lg">Unlock special monster brooches as you master English skills!</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4" id="badges-container">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+    <!-- 6. TRAVEL JOURNAL / BITÁCORA ARG -->
+    <section id="tab-journal" class="tab-page hidden max-w-5xl mx-auto px-4 py-6 relative z-20">
+      <div class="bg-spooky-deepPurple/90 rounded-3xl border-4 border-spooky-magenta p-6 shadow-2xl">
+        <div class="flex items-center justify-between border-b-2 border-spooky-purple pb-4 mb-6">
+          <div class="flex items-center gap-3">
+            <span class="text-4xl">📖</span>
+            <div>
+              <h2 class="font-title text-3xl text-spooky-magenta">MONSGOTÁ ARG JOURNAL</h2>
+              <p class="text-xs text-slate-300">Your decision logs and team progress history.</p>
+            </div>
+          </div>
+          <button onclick="resetGameProgress()" class="text-xs text-rose-400 bg-rose-950/80 px-3 py-1.5 rounded-lg border border-rose-800 hover:bg-rose-900 transition-all">
+            <i class="fa-solid fa-rotate-left mr-1"></i> Reset Progress
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Column 1: Active Hero Summary -->
+          <div class="bg-spooky-purple/60 p-4 rounded-2xl border border-spooky-yellow">
+            <h3 class="font-chewy text-xl text-spooky-yellow mb-3">Hero Status</h3>
+            <div id="journal-hero-summary" class="text-center">
+              <p class="text-xs text-slate-400">No character selected yet.</p>
+            </div>
+          </div>
+
+          <!-- Column 2: ARG Decision Choices Log -->
+          <div class="md:col-span-2 bg-slate-900/80 p-4 rounded-2xl border border-slate-800">
+            <h3 class="font-chewy text-xl text-spooky-teal mb-3">Decision History</h3>
+            <div id="journal-history-list" class="space-y-3 max-h-80 overflow-y-auto pr-2">
+              <p class="text-xs text-slate-500 italic">No decisions logged yet. Play levels to make choices!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-spooky-deepPurple border-t-2 border-spooky-purple py-3 px-4 text-center text-xs text-slate-400 relative z-20">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
+      <p class="font-chewy text-spooky-teal">DANU.NAM &bull; MONSGOTÁ: THE SHADOW CHRONICLES</p>
+      <p>Bogotá ESL L2 Educational Transmedia Experience &copy; 2026</p>
+    </div>
+  </footer>
+
+  <!-- GLOBAL JS ENGINE -->
+  <script>
+    /* ==========================================================================
+       1. GAME ENGINE STATE (SCHEMAS & DATA NODES)
+       ========================================================================== */
+    const GAME_STATE = {
+      selectedCharacter: null, // 'lorens', 'vladya', 'wolfy', 'belsky', 'nofret'
+      currentLevel: 1,
+      unlockedLevels: [1],
+      inventory: [],
+      badges: {
+        lorens: false,
+        vladya: false,
+        wolfy: false,
+        belsky: false,
+        nofret: false
+      },
+      decisions: {
+        level1_choice: null,
+        level2_choice: null,
+        level3_choice: null,
+        level4_choice: null,
+        level5_choice: null
+      },
+      teamEnergy: 100,
+      journalLog: []
+    };
+
+    /* CHARACTERS DATA NODE */
+    const CHARACTERS_NODE = [
+      {
+        id: "lorens",
+        name: "Lorens el Zombie",
+        archetype: "Zombie Boy",
+        badgeName: "Broche del Hueso Dorado",
+        emoji: "🧟‍♂️",
+        theme: "Arts & Food, memory & empathy",
+        desc: "Passionate about arts and food! Forgets things easily when his ideas get 'disconnected'. Story focuses on memory and empathy.",
+        prompt: "Cute chibi zombie boy, light green skin, exposed pink brain with small bone, stitching scar, big black button eyes, tattered dark blue shirt."
+      },
+      {
+        id: "vladya",
+        name: "Vladya la Vampira",
+        archetype: "Vampire Girl",
+        badgeName: "Broche de Murciélago",
+        emoji: "🧛‍♀️",
+        theme: "Elegance & emotions, urban etiquette",
+        desc: "Elegantly nocturnal and sensitive to noon Bogotano sunlight. Her story explores emotional balance and urban etiquette.",
+        prompt: "Cute chibi vampire girl, pale skin, tiny fangs, long dark brown hair, dark olive dress, brown cape with red ribbon bow."
+      },
+      {
+        id: "wolfy",
+        name: "Wolfy el Hombre Lobo",
+        archetype: "Werewolf Boy",
+        badgeName: "Broche de Luna Llena",
+        emoji: "🐺",
+        theme: "Energy & sports, self-regulation",
+        desc: "Full of energy and athletic! Transforms when stressed. Story focuses on self-regulation and true friendship.",
+        prompt: "Cute chibi werewolf boy, fluffy brown fur, pointy wolf ears, tattered dark blue jacket, ripped green shorts."
+      },
+      {
+        id: "belsky",
+        name: "Belsky la Bruja",
+        archetype: "Witch Girl",
+        badgeName: "Broche de Varita Botánica",
+        emoji: "🧙‍♀️",
+        theme: "Botany & science, problem solving",
+        desc: "Curious witch with a backpack full of botanical potions made from Sabana de Bogotá plants. Focuses on nature and science.",
+        prompt: "Cute chibi witch girl, wide-brimmed black witch hat with orange band, short brown hair, holding wooden broomstick."
+      },
+      {
+        id: "nofret",
+        name: "Nofret la Momia",
+        archetype: "Mummy Boy",
+        badgeName: "Broche de Vendaje Mágico",
+        emoji: "🧟",
+        theme: "History & culture, public space",
+        desc: "A reserved ancient boy who lived for centuries in Bogotá; wrapped in decorated bandages. Explores cultural heritage.",
+        prompt: "Cute chibi mummy character, cream bandages, smiling happy face, large glossy black button eyes, friendly posture."
+      }
+    ];
+
+    /* LEVELS AND ARG DECISION NODES */
+    const LEVEL_NODES = {
+      1: {
+        title: "The Dark Academy (Chapinero)",
+        cefr: "CEFR A1.1",
+        locationDesc: "A gothic school mansion in Chapinero with brick walls, glowing warm windows, and crooked trees.",
+        flashcards: [
+          { word: "Notebook", meaning: "Cuaderno", emoji: "📓" },
+          { word: "Desk", meaning: "Escritorio", emoji: "🪑" },
+          { word: "Pencil", meaning: "Lápiz", emoji: "✏️" },
+          { word: "Library", meaning: "Biblioteca", emoji: "📚" }
+        ],
+        reading: {
+          text: "1. Do not run in the hallway. 2. Speak quietly in the library. 3. Raise your hand to speak in class.",
+          question: "What is the rule for the library?",
+          options: ["Do not run in the hallway", "Speak quietly in the library", "Raise your hand to speak"],
+          correct: 1
+        },
+        listening: {
+          audioText: "I lost my yellow notebook behind the desk...",
+          question: "What did the ghost lose behind the desk?",
+          options: ["A magic pencil", "A yellow notebook", "A school lunchbox"],
+          correct: 1
+        },
+        writing: {
+          instruction: "Complete the permission note:",
+          templateBefore: "Dear Teacher, I need to go to the",
+          templateAfter: "to read a book.",
+          correctWord: "library"
+        },
+        speaking: {
+          targetPhrase: "Good evening Mr. Janitor!"
+        },
+        decisionNode: {
+          dilemmaText: "You hear a strange sob coming from behind a bookshelf in Chapinero's Dark Academy. A small lost ghost is looking for its lost spellbook. What do you do?",
+          options: [
+            {
+              id: "A",
+              text: "Help the ghost search for its book.",
+              consequenceState: { level1_choice: "help_ghost" },
+              narrativeResult: "The ghost thanks you and gives you a Spectral Bookmark ally for Level 2!"
+            },
+            {
+              id: "B",
+              text: "Hide under the desk until morning.",
+              consequenceState: { level1_choice: "hide" },
+              narrativeResult: "You escape undetected, but you navigate Level 2 without an ally."
+            }
+          ]
+        }
+      },
+      2: {
+        title: "TransMilenio Spooky Station",
+        cefr: "CEFR A1.2",
+        locationDesc: "A spooky dark red articulado bus with spiderwebs on its bellows parked at a foggy Bogota bus station.",
+        flashcards: [
+          { word: "Station", meaning: "Estación", emoji: "🚉" },
+          { word: "Ticket", meaning: "Tiquete", emoji: "🎟️" },
+          { word: "Red Bus", meaning: "Autobús articulado", emoji: "🚌" },
+          { word: "Seat", meaning: "Asiento", emoji: "💺" }
+        ],
+        reading: {
+          text: "Route B13: Destination Monserrate Hill. Express stop at Calle 26. Stand behind the yellow line.",
+          question: "Where does Route B13 go?",
+          options: ["Plaza de Bolívar", "Monserrate Hill", "Chapinero Station"],
+          correct: 1
+        },
+        listening: {
+          audioText: "The red bus arrives at platform three in two minutes.",
+          question: "Which platform is the red bus coming to?",
+          options: ["Platform one", "Platform two", "Platform three"],
+          correct: 2
+        },
+        writing: {
+          instruction: "Complete the route directions:",
+          templateBefore: "To reach the hill, turn",
+          templateAfter: "at the next station.",
+          correctWord: "left"
+        },
+        speaking: {
+          targetPhrase: "Is this the bus to Monserrate?"
+        },
+        decisionNode: {
+          dilemmaText: "An elderly Gargoyle gets onto the crowded TransMilenio bus. Your feet hurt, but she looks very tired. What do you do?",
+          options: [
+            {
+              id: "A",
+              text: "Offer your seat politely to the Gargoyle.",
+              consequenceState: { level2_choice: "give_seat" },
+              narrativeResult: "She smiles and hands you an Ancient Silver Gargoyle Coin!"
+            },
+            {
+              id: "B",
+              text: "Ignore her and get off at the wrong stop.",
+              consequenceState: { level2_choice: "wrong_station" },
+              narrativeResult: "You get off early in a foggy street and lose 10 Team Energy points."
+            }
+          ]
+        }
+      },
+      3: {
+        title: "Monster-rate Hill (Monserrate)",
+        cefr: "CEFR A1.2+",
+        locationDesc: "Spooky hill with thick fog, winding stone paths, streetlights, and a church silhouette on top.",
+        flashcards: [
+          { word: "Fog", meaning: "Niebla", emoji: "🌫️" },
+          { word: "Path", meaning: "Sendero", emoji: "🧗" },
+          { word: "Cable car", meaning: "Teleférico", emoji: "🚡" },
+          { word: "Moonlight", meaning: "Luz de luna", emoji: "🌕" }
+        ],
+        reading: {
+          text: "High above the clouds, nocturnal birds guard the secret key of Monsgotá inside the stone sanctuary.",
+          question: "Where is the secret key guarded?",
+          options: ["Under the river", "High above the clouds", "Inside the bus"],
+          correct: 1
+        },
+        listening: {
+          audioText: "Look at the moon shining over the cloudy mountain path!",
+          question: "What is shining over the path?",
+          options: ["The sun", "The moon", "A lantern"],
+          correct: 1
+        },
+        writing: {
+          instruction: "Complete the mountain description:",
+          templateBefore: "The city below is very",
+          templateAfter: "tonight.",
+          correctWord: "foggy"
+        },
+        speaking: {
+          targetPhrase: "The foggy path is very steep today!"
+        },
+        decisionNode: {
+          dilemmaText: "At the base of Monster-rate Hill, you see two ways up: the floating haunted cable car or the steep stone path.",
+          options: [
+            {
+              id: "A",
+              text: "Board the haunted cable car.",
+              consequenceState: { level3_choice: "cable_car" },
+              narrativeResult: "Floating over the fog, you spot secret glowing glyphs on the mountain rocks!"
+            },
+            {
+              id: "B",
+              text: "Hike up the winding stone path.",
+              consequenceState: { level3_choice: "stone_path" },
+              narrativeResult: "It is a tough climb, but you train your endurance for the final trial."
+            }
+          ]
+        }
+      },
+      4: {
+        title: "The Ghostly Plaza of Bolívar",
+        cefr: "CEFR A2.1",
+        locationDesc: "Historic plaza inspired by Plaza de Bolívar with colonial buildings, blue ghostly mist, and gargoyles.",
+        flashcards: [
+          { word: "Hot Chocolate", meaning: "Chocolate caliente", emoji: "☕" },
+          { word: "Plaza", meaning: "Plaza pública", emoji: "🏛️" },
+          { word: "Coins", meaning: "Monedas", emoji: "🪙" },
+          { word: "Cheese", meaning: "Queso", emoji: "🧀" }
+        ],
+        reading: {
+          text: "Special Menu: Spooky Hot Chocolate ($3), Ghostly Chicha ($2), Monster Bread ($1).",
+          question: "How much does the Ghostly Chicha cost?",
+          options: ["$3", "$2", "$1"],
+          correct: 1
+        },
+        listening: {
+          audioText: "I would like a warm chocolate and cheese, please!",
+          question: "What did the customer order?",
+          options: ["Chicha and bread", "Chocolate and cheese", "Coffee and cake"],
+          correct: 1
+        },
+        writing: {
+          instruction: "Complete the food order:",
+          templateBefore: "I would like some hot chocolate and",
+          templateAfter: "please.",
+          correctWord: "cheese"
+        },
+        speaking: {
+          targetPhrase: "Can I have one ghostly hot chocolate, please?"
+        },
+        decisionNode: {
+          dilemmaText: "Your team is tired and cold in Plaza de Bolívar. You have few coins left. Do you buy warm snacks or a glowing star lens?",
+          options: [
+            {
+              id: "A",
+              text: "Buy warm food and hot chocolate for everyone.",
+              consequenceState: { level4_choice: "buy_food" },
+              narrativeResult: "Your team recovers full 100% Team Energy for the Planetarium!"
+            },
+            {
+              id: "B",
+              text: "Save coins and buy the Glowing Star Lens.",
+              consequenceState: { level4_choice: "save_coins" },
+              narrativeResult: "You get the Star Lens tool, but Team Energy stays low (60%)."
+            }
+          ]
+        }
+      },
+      5: {
+        title: "The Misty Planetarium",
+        cefr: "CEFR A2.1+",
+        locationDesc: "Spooky planetarium building with a large dome emitting neon purple/green star lights into the night sky.",
+        flashcards: [
+          { word: "Stars", meaning: "Estrellas", emoji: "⭐" },
+          { word: "Dome", meaning: "Domo", emoji: "🪐" },
+          { word: "Prophecy", meaning: "Profecía", emoji: "📜" },
+          { word: "Secret", meaning: "Secreto", emoji: "🔮" }
+        ],
+        reading: {
+          text: "When monsters and humans share knowledge, the fog transforms into bright starlight.",
+          question: "What happens when knowledge is shared?",
+          options: ["The city disappears", "The fog transforms into light", "The stars fall"],
+          correct: 1
+        },
+        listening: {
+          audioText: "Will you keep Monsgotá hidden, or open its doors with wisdom?",
+          question: "What is the Monster Council asking you to decide?",
+          options: ["To build a school", "The future of Monsgotá", "To leave the city"],
+          correct: 1
+        },
+        writing: {
+          instruction: "Write your final journal entry:",
+          templateBefore: "My journey in Monsgotá taught me to be",
+          templateAfter: "and creative.",
+          correctWord: "kind"
+        },
+        speaking: {
+          targetPhrase: "I am ready to share my decision with Monsgotá!"
+        },
+        decisionNode: {
+          dilemmaText: "FINAL CHOICE: The Council of Monsters awaits! Do you reveal Monsgotá to the human world, or keep it a hidden sanctuary?",
+          options: [
+            {
+              id: "A",
+              text: "REVEAL THE SECRET: Build a bridge between Humans and Monsters.",
+              consequenceState: { level5_choice: "reveal_secret" },
+              narrativeResult: "ENDING A: HARMONY OF TWO WORLDS! You unlock the Cultural Ambassador Badge!"
+            },
+            {
+              id: "B",
+              text: "PROTECT THE CITY: Keep Monsgotá hidden as a safe sanctuary.",
+              consequenceState: { level5_choice: "protect_city" },
+              narrativeResult: "ENDING B: GUARDIAN OF SHADOWS! Monsgotá stays safe in the magical mist!"
+            }
+          ]
+        }
+      }
+    };
+
+    /* ACTIVE STATE HELPERS */
+    let activeLevel = 1;
+
+    /* ==========================================================================
+       2. TONE.JS SOUND SYNTHESIS (NO EXTERNAL AUDIO FILES REQUIRED)
+       ========================================================================== */
+    let synth = null;
+
+    function initAudio() {
+      if (!synth && typeof Tone !== 'undefined') {
+        synth = new Tone.Synth().toDestination();
+      }
+    }
+
+    function playSoundEffect(type) {
+      initAudio();
+      if (!synth) return;
+
+      try {
+        if (type === 'click') {
+          synth.triggerAttackRelease("C5", "8n");
+        } else if (type === 'correct') {
+          const now = Tone.now();
+          synth.triggerAttackRelease("G4", "8n", now);
+          synth.triggerAttackRelease("C5", "8n", now + 0.15);
+        } else if (type === 'wrong') {
+          synth.triggerAttackRelease("C3", "4n");
+        } else if (type === 'fanfare') {
+          const now = Tone.now();
+          synth.triggerAttackRelease("C4", "8n", now);
+          synth.triggerAttackRelease("E4", "8n", now + 0.1);
+          synth.triggerAttackRelease("G4", "8n", now + 0.2);
+          synth.triggerAttackRelease("C5", "4n", now + 0.3);
+        }
+      } catch (e) {
+        console.log("Audio synthesis notice:", e);
+      }
+    }
+
+    /* SPEECH SYNTHESIS NATIVE WEB API */
+    function speakText(text) {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel(); // Stop prior speech
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'en-US';
+        utterance.rate = 0.85; // Slightly slower for primary students
+        window.speechSynthesis.speak(utterance);
+      }
+    }
+
+    /* ==========================================================================
+       3. NAVIGATION & TAB SYSTEM
+       ========================================================================== */
+    function switchTab(tabId) {
+      playSoundEffect('click');
+      
+      // Hide all tabs
+      document.querySelectorAll('.tab-page').forEach(page => {
+        page.classList.add('hidden');
+      });
+
+      // Show target tab
+      const targetPage = document.getElementById(`tab-${tabId}`);
+      if (targetPage) {
+        targetPage.classList.remove('hidden');
+      }
+
+      // Close mobile menu if open
+      document.getElementById('mobile-menu').classList.add('hidden');
+
+      // Refresh tab specific views
+      if (tabId === 'characters') renderCharactersView();
+      if (tabId === 'badges') renderBadgesView();
+      if (tabId === 'journal') renderJournalView();
+      if (tabId === 'map') updateMapStateUI();
+    }
+
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+    }
+
+    /* ==========================================================================
+       4. CHARACTER SELECTION ENGINE
+       ========================================================================== */
+    function renderCharactersView() {
+      const container = document.getElementById('characters-container');
+      container.innerHTML = '';
+
+      CHARACTERS_NODE.forEach(char => {
+        const isSelected = GAME_STATE.selectedCharacter === char.id;
+        
+        const card = document.createElement('div');
+        card.className = `card-sarcophagus p-4 flex flex-col justify-between text-center relative cursor-pointer ${
+          isSelected ? 'border-spooky-teal border-4 shadow-[0_0_20px_rgba(0,245,212,0.8)]' : ''
+        }`;
+
+        card.innerHTML = `
+          <div>
+            <div class="w-20 h-20 mx-auto rounded-full bg-spooky-purple border-2 border-spooky-yellow flex items-center justify-center text-4xl mb-3 animate-float">
+              ${char.emoji}
+            </div>
+            <h3 class="font-title text-2xl text-spooky-yellow leading-tight mb-1">${char.name}</h3>
+            <span class="inline-block bg-spooky-purple text-spooky-teal text-xs font-chewy px-2 py-0.5 rounded-full border border-spooky-teal mb-2">
+              ${char.archetype}
+            </span>
+            <p class="text-xs text-slate-300 leading-relaxed mb-3">${char.desc}</p>
+          </div>
+
+          <div>
+            <div class="text-[10px] text-spooky-orange bg-slate-950/80 p-2 rounded-xl border border-slate-800 mb-3 font-bold">
+              🎖️ Badge: ${char.badgeName}
+            </div>
+            <button onclick="selectCharacter('${char.id}')" class="w-full btn-tombstone py-2 font-chewy ${
+              isSelected ? 'text-spooky-teal border-spooky-teal' : 'text-spooky-green'
+            } text-sm uppercase">
+              ${isSelected ? '✓ Selected' : 'Choose Hero'}
+            </button>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function selectCharacter(charId) {
+      GAME_STATE.selectedCharacter = charId;
+      const charObj = CHARACTERS_NODE.find(c => c.id === charId);
+
+      // Unlock badge criterion for character choice
+      GAME_STATE.badges[charId] = true;
+
+      // Update Header Status Bar
+      document.getElementById('active-char-avatar').innerHTML = charObj.emoji;
+      document.getElementById('active-char-name').innerText = charObj.name.split(' ')[0];
+
+      playSoundEffect('fanfare');
+      
+      // Auto switch to map
+      switchTab('map');
+    }
+
+    /* ==========================================================================
+       5. MAP & LEVEL PROGRESSION
+       ========================================================================== */
+    function updateMapStateUI() {
+      document.getElementById('current-level-display').innerText = GAME_STATE.currentLevel;
+
+      // Update SVG node lock/unlock visuals
+      for (let i = 1; i <= 5; i++) {
+        const node = document.getElementById(`map-node-${i}`);
+        if (!node) continue;
+        
+        const circle = node.querySelector('circle');
+        if (i <= GAME_STATE.currentLevel) {
+          circle.setAttribute('opacity', '1.0');
+        } else {
+          circle.setAttribute('opacity', '0.4');
+        }
+      }
+
+      // Show details for active level
+      selectLevel(GAME_STATE.currentLevel);
+    }
+
+    function selectLevel(levelNum) {
+      if (levelNum > GAME_STATE.currentLevel) {
+        playSoundEffect('wrong');
+        alert(`🔒 Level ${levelNum} is locked! Complete previous levels first.`);
+        return;
+      }
+
+      activeLevel = levelNum;
+      const lvlData = LEVEL_NODES[levelNum];
+
+      document.getElementById('location-card-title').innerText = lvlData.title;
+      document.getElementById('location-card-cefr').innerText = lvlData.cefr;
+      document.getElementById('location-card-desc').innerText = lvlData.locationDesc;
+
+      playSoundEffect('click');
+    }
+
+    function openLevelMission() {
+      const lvlData = LEVEL_NODES[activeLevel];
+      
+      document.getElementById('mission-title').innerText = `LEVEL ${activeLevel}: ${lvlData.title.toUpperCase()}`;
+      document.getElementById('mission-skill-badge').innerText = lvlData.cefr;
+
+      // Populate Vocabulary Flashcards
+      renderFlashcards(lvlData.flashcards);
+
+      // Populate Reading Skill
+      document.getElementById('reading-text').innerText = lvlData.reading.text;
+      document.getElementById('reading-question').innerText = lvlData.reading.question;
+      renderOptions('reading-options', lvlData.reading.options, lvlData.reading.correct, 'reading');
+
+      // Populate Listening Skill
+      document.getElementById('listening-question').innerText = lvlData.listening.question;
+      renderOptions('listening-options', lvlData.listening.options, lvlData.listening.correct, 'listening');
+
+      // Populate Writing Skill
+      document.getElementById('writing-instruction').innerText = lvlData.writing.instruction;
+      document.getElementById('writing-template-before').innerText = lvlData.writing.templateBefore;
+      document.getElementById('writing-template-after').innerText = lvlData.writing.templateAfter;
+      document.getElementById('writing-input').value = '';
+
+      // Populate Speaking Skill
+      document.getElementById('speaking-phrase').innerText = `"${lvlData.speaking.targetPhrase}"`;
+
+      // Populate Decision Node
+      document.getElementById('decision-dilemma-text').innerText = lvlData.decisionNode.dilemmaText;
+      renderDecisionOptions(lvlData.decisionNode.options);
+
+      // Reset feedback messages
+      hideFeedbacks();
+
+      // Open subtab 'vocab' first
+      switchMissionSubTab('vocab');
+      switchTab('mission');
+    }
+
+    function switchMissionSubTab(subtabId) {
+      playSoundEffect('click');
+      
+      document.querySelectorAll('.mission-subtab').forEach(el => el.classList.add('hidden'));
+      document.getElementById(`subtab-${subtabId}`).classList.remove('hidden');
+
+      // Reset button highlights
+      const subtabBtns = ['vocab', 'reading', 'listening', 'writing', 'speaking', 'decision'];
+      subtabBtns.forEach(id => {
+        const btn = document.getElementById(`subtab-btn-${id}`);
+        if (id === subtabId) {
+          btn.className = "px-4 py-1.5 rounded-xl font-chewy text-sm bg-spooky-yellow text-spooky-deepPurple font-bold";
+        } else if (id === 'decision') {
+          btn.className = "px-4 py-1.5 rounded-xl font-chewy text-sm bg-spooky-magenta text-slate-100 ml-auto animate-pulse";
+        } else {
+          btn.className = "px-4 py-1.5 rounded-xl font-chewy text-sm bg-spooky-purple text-slate-300";
+        }
+      });
+    }
+
+    /* ==========================================================================
+       6. SKILLS CHALLENGES LOGIC (R/L/W/S)
+       ========================================================================== */
+    function renderFlashcards(cards) {
+      const container = document.getElementById('flashcards-grid');
+      container.innerHTML = '';
+
+      cards.forEach(card => {
+        const div = document.createElement('div');
+        div.className = "bg-spooky-purple/80 p-4 rounded-2xl border-2 border-spooky-yellow text-center cursor-pointer hover:scale-105 transition-all shadow-lg";
+        div.onclick = () => {
+          speakText(card.word);
+          playSoundEffect('click');
+        };
+
+        div.innerHTML = `
+          <div class="text-4xl mb-2">${card.emoji}</div>
+          <h4 class="font-title text-2xl text-spooky-yellow">${card.word}</h4>
+          <p class="font-chewy text-sm text-spooky-teal">${card.meaning}</p>
+          <span class="inline-block mt-2 text-[10px] text-slate-400 bg-slate-950 px-2 py-0.5 rounded-full">
+            🔊 Click to Hear
+          </span>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function renderOptions(containerId, options, correctIdx, skillType) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+
+      options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = "w-full text-left bg-slate-950 hover:bg-spooky-purple border border-slate-800 p-3 rounded-xl font-chewy text-slate-200 text-sm transition-all flex items-center justify-between";
+        btn.innerHTML = `<span>${idx + 1}. ${opt}</span> <i class="fa-solid fa-circle-question text-slate-600"></i>`;
+        
+        btn.onclick = () => {
+          if (idx === correctIdx) {
+            playSoundEffect('correct');
+            showSkillFeedback(`${skillType}-feedback`, '✓ Correct Answer! Excellent job!', true);
+          } else {
+            playSoundEffect('wrong');
+            showSkillFeedback(`${skillType}-feedback`, '❌ Try again! Read carefully.', false);
+          }
+        };
+        container.appendChild(btn);
+      });
+    }
+
+    function playListeningAudio() {
+      const audioText = LEVEL_NODES[activeLevel].listening.audioText;
+      speakText(audioText);
+    }
+
+    function checkWritingAnswer() {
+      const val = document.getElementById('writing-input').value.trim().toLowerCase();
+      const correctVal = LEVEL_NODES[activeLevel].writing.correctWord.toLowerCase();
+
+      if (val === correctVal) {
+        playSoundEffect('correct');
+        showSkillFeedback('writing-feedback', '✓ Correct spelling! You earned vocabulary points!', true);
+      } else {
+        playSoundEffect('wrong');
+        showSkillFeedback('writing-feedback', `❌ Keep trying! Hint: word starts with "${correctVal[0]}"`, false);
+      }
+    }
+
+    function playSpeakingSample() {
+      const phrase = LEVEL_NODES[activeLevel].speaking.targetPhrase;
+      speakText(phrase);
+    }
+
+    function startSpeechRecognition() {
+      const targetPhrase = LEVEL_NODES[activeLevel].speaking.targetPhrase;
+      const statusEl = document.getElementById('speaking-status');
+      const feedbackEl = document.getElementById('speaking-feedback');
+
+      if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+        // Fallback if browser doesn't support Web Speech API
+        statusEl.innerText = "Speech API not available on this browser. Voice auto-verified!";
+        playSoundEffect('correct');
+        feedbackEl.className = "mt-3 font-chewy text-lg text-spooky-green";
+        feedbackEl.innerText = "🎤 Great pronunciation practice!";
+        feedbackEl.classList.remove('hidden');
+        return;
+      }
+
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const recognition = new SpeechRecognition();
+      recognition.lang = 'en-US';
+
+      statusEl.innerText = "🎙️ Listening... Speak now!";
+      recognition.start();
+
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        statusEl.innerText = `Heard: "${transcript}"`;
+
+        playSoundEffect('correct');
+        feedbackEl.className = "mt-3 font-chewy text-lg text-spooky-green";
+        feedbackEl.innerText = `🎤 Great job speaking in English!`;
+        feedbackEl.classList.remove('hidden');
+      };
+
+      recognition.onerror = () => {
+        statusEl.innerText = "Could not hear clearly. Try again!";
+      };
+    }
+
+    function showSkillFeedback(elementId, msg, isSuccess) {
+      const el = document.getElementById(elementId);
+      el.innerText = msg;
+      el.className = `mt-3 text-sm font-bold p-2 rounded-xl text-center ${
+        isSuccess ? 'bg-emerald-950 border border-emerald-500 text-emerald-300' : 'bg-rose-950 border border-rose-500 text-rose-300'
+      }`;
+      el.classList.remove('hidden');
+    }
+
+    function hideFeedbacks() {
+      ['reading-feedback', 'listening-feedback', 'writing-feedback', 'speaking-feedback'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('hidden');
+      });
+      document.getElementById('decision-result-box').classList.add('hidden');
+    }
+
+    /* ==========================================================================
+       7. ARG BRANCHING DECISIONS & LOG ENGINE
+       ========================================================================== */
+    function renderDecisionOptions(options) {
+      const container = document.getElementById('decision-options-container');
+      container.innerHTML = '';
+
+      options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = "btn-tombstone p-4 text-left flex flex-col justify-between hover:scale-102 transition-all";
+        btn.onclick = () => makeARGDecision(opt);
+
+        btn.innerHTML = `
+          <div>
+            <span class="font-chewy text-spooky-yellow text-xs block mb-1">Option ${opt.id}</span>
+            <p class="font-chewy text-slate-100 text-sm leading-snug">${opt.text}</p>
+          </div>
+          <div class="mt-3 text-right">
+            <span class="text-xs font-chewy text-spooky-green bg-slate-950 px-3 py-1 rounded-full border border-spooky-green">
+              Choose Decision ➔
+            </span>
+          </div>
+        `;
+        container.appendChild(btn);
+      });
+    }
+
+    function makeARGDecision(optionObj) {
+      playSoundEffect('fanfare');
+
+      // Update Consequence state
+      Object.assign(GAME_STATE.decisions, optionObj.consequenceState);
+
+      // Energy modifications
+      if (optionObj.consequenceState.level2_choice === 'wrong_station') {
+        GAME_STATE.teamEnergy = Math.max(10, GAME_STATE.teamEnergy - 10);
+      } else if (optionObj.consequenceState.level4_choice === 'buy_food') {
+        GAME_STATE.teamEnergy = 100;
+      }
+      updateEnergyUI();
+
+      // Display Outcome
+      const resultBox = document.getElementById('decision-result-box');
+      const resultText = document.getElementById('decision-result-text');
+      resultText.innerText = optionObj.narrativeResult;
+      resultBox.classList.remove('hidden');
+
+      // Log into Journal
+      GAME_STATE.journalLog.push({
+        level: activeLevel,
+        location: LEVEL_NODES[activeLevel].title,
+        choiceText: optionObj.text,
+        outcome: optionObj.narrativeResult,
+        timestamp: new Date().toLocaleTimeString()
+      });
+
+      // Unlock next level progression
+      if (activeLevel < 5 && !GAME_STATE.unlockedLevels.includes(activeLevel + 1)) {
+        GAME_STATE.currentLevel = activeLevel + 1;
+        GAME_STATE.unlockedLevels.push(activeLevel + 1);
+      }
+    }
+
+    function updateEnergyUI() {
+      const bar = document.getElementById('energy-bar');
+      const text = document.getElementById('energy-text');
+      bar.style.width = `${GAME_STATE.teamEnergy}%`;
+      text.innerText = `${GAME_STATE.teamEnergy}%`;
+    }
+
+    /* ==========================================================================
+       8. BADGES & GALLERY VIEW
+       ========================================================================== */
+    function renderBadgesView() {
+      const container = document.getElementById('badges-container');
+      container.innerHTML = '';
+
+      CHARACTERS_NODE.forEach(char => {
+        const isUnlocked = GAME_STATE.badges[char.id];
+
+        const card = document.createElement('div');
+        card.className = `p-4 rounded-2xl border-2 text-center flex flex-col items-center justify-between transition-all ${
+          isUnlocked 
+            ? 'bg-spooky-purple/90 border-spooky-yellow shadow-[0_0_15px_rgba(255,209,98,0.5)]' 
+            : 'bg-slate-950 border-slate-800 opacity-60'
+        }`;
+
+        card.innerHTML = `
+          <div>
+            <div class="w-16 h-16 rounded-full border-2 border-spooky-yellow flex items-center justify-center text-3xl mb-2 ${
+              isUnlocked ? 'bg-spooky-yellow/20 animate-bounce' : 'bg-slate-900 grayscale'
+            }">
+              ${isUnlocked ? '🏅' : '🔒'}
+            </div>
+            <h3 class="font-title text-xl text-spooky-yellow leading-tight mb-1">${char.badgeName}</h3>
+            <p class="font-chewy text-xs text-spooky-teal mb-2">${char.name}</p>
+          </div>
+          <span class="text-[10px] font-bold px-3 py-1 rounded-full ${
+            isUnlocked ? 'bg-spooky-green/20 text-spooky-green border border-spooky-green' : 'bg-slate-800 text-slate-500'
+          }">
+            ${isUnlocked ? 'UNLOCKED' : 'Select Hero to Unlock'}
+          </span>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    /* ==========================================================================
+       9. JOURNAL LOG VIEW
+       ========================================================================== */
+    function renderJournalView() {
+      const heroBox = document.getElementById('journal-hero-summary');
+      const historyList = document.getElementById('journal-history-list');
+
+      // Hero Summary
+      if (GAME_STATE.selectedCharacter) {
+        const char = CHARACTERS_NODE.find(c => c.id === GAME_STATE.selectedCharacter);
+        heroBox.innerHTML = `
+          <div class="text-4xl mb-1">${char.emoji}</div>
+          <h4 class="font-title text-2xl text-spooky-yellow">${char.name}</h4>
+          <span class="text-xs text-spooky-teal font-chewy">${char.archetype}</span>
+          <p class="text-xs text-slate-300 mt-2">${char.theme}</p>
+        `;
+      } else {
+        heroBox.innerHTML = `<p class="text-xs text-slate-400">No active hero selected. Go to Characters tab!</p>`;
+      }
+
+      // History Log
+      if (GAME_STATE.journalLog.length > 0) {
+        historyList.innerHTML = '';
+        GAME_STATE.journalLog.forEach(log => {
+          const div = document.createElement('div');
+          div.className = "bg-slate-950 p-3 rounded-xl border border-spooky-purple text-xs";
+          div.innerHTML = `
+            <div class="flex justify-between items-center text-spooky-yellow font-chewy mb-1">
+              <span>L${log.level}: ${log.location}</span>
+              <span class="text-[10px] text-slate-500">${log.timestamp}</span>
+            </div>
+            <p class="text-slate-300 mb-1"><strong>Choice:</strong> ${log.choiceText}</p>
+            <p class="text-spooky-teal italic"><strong>Outcome:</strong> ${log.outcome}</p>
+          `;
+          historyList.appendChild(div);
+        });
+      } else {
+        historyList.innerHTML = `<p class="text-xs text-slate-500 italic">No decisions logged yet. Explore levels on the map!</p>`;
+      }
+    }
+
+    function resetGameProgress() {
+      if (confirm("Reset all game progress and decision history?")) {
+        GAME_STATE.selectedCharacter = null;
+        GAME_STATE.currentLevel = 1;
+        GAME_STATE.unlockedLevels = [1];
+        GAME_STATE.teamEnergy = 100;
+        GAME_STATE.journalLog = [];
+        Object.keys(GAME_STATE.badges).forEach(k => GAME_STATE.badges[k] = false);
+
+        document.getElementById('active-char-avatar').innerHTML = '❓';
+        document.getElementById('active-char-name').innerText = 'No Character';
+        updateEnergyUI();
+
+        switchTab('landing');
+      }
+    }
+
+    /* ==========================================================================
+       10. INITIALIZATION ON WINDOW LOAD
+       ========================================================================== */
+    window.onload = function() {
+      // Default initial view
+      switchTab('landing');
+    };
+  </script>
+</body>
+</html>
